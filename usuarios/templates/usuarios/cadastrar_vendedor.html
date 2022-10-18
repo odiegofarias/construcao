@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+        {% if messages %}
+            <br>
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <form action="{% url 'cadastrar_vendedor' %}" method="POST">
+            {% csrf_token %}
+            <br>
+            <label>Email</label>
+            <input type="email" placeholder="Digite seu email" name="email" class="form-control">
+            <br>
+            <label>Senha</label>
+            <input type="password" placeholder="Digite sua senha" name="senha" class="form-control">
+            <br>
+            <input type="submit" class="btn btn-success">
+        </form>
+        <hr>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Sobrenome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Ùltimo login</th>
+                    <th scope="col">Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vendedor in vendedores %}
+                <tr>
+                    <th scope="row">{{ vendedor.first_name }}</th>
+                    <td>{{ vendedor.last_name }}</td>
+                    <td>{{ vendedor.email }}</td>
+                    <td>
+                        {% if not vendedor.last_login %}
+                             Primeiro acesso
+                        {% else %}
+                            {{ vendedor.last_login }}
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'excluir_usuario' vendedor.id %}" class="btn btn-danger">Excluir</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock body %}
