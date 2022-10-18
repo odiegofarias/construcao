@@ -11,6 +11,12 @@
         <form action="{% url 'cadastrar_vendedor' %}" method="POST">
             {% csrf_token %}
             <br>
+            <label>Nome</label>
+            <input type="text" placeholder="Digite seu nome" name="nome" class="form-control">
+            <br>
+            <label>Sobrenome</label>
+            <input type="text" placeholder="Digite seu sobrenome" name="sobrenome" class="form-control">
+            <br>
             <label>Email</label>
             <input type="email" placeholder="Digite seu email" name="email" class="form-control">
             <br>
