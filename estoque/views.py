@@ -16,8 +16,32 @@ from .forms import ProdutoForm
 @has_permission_decorator('cadastrar_produto')
 def add_produto(request):
     if request.method == "GET":
-        categorias = Categoria.objects.all()
+        data = request.GET
+
+        nome = data.get('nome')
+        categoria = data.get('categoria')
+        preco_min = data.get('preco_min')
+        preco_max = data.get('preco_max')
+
         produtos = Produto.objects.all()
+
+        if nome or categoria or preco_min or preco_max:
+            if not preco_min:
+                preco_min = 0
+            
+            if not preco_max:
+                preco_max = 99999999
+
+            if nome:
+                produtos = produtos.filter(nome__icontains=nome)
+
+            if categoria:
+                produtos = produtos.filter(categoria=categoria)
+
+            produtos = produtos.filter(preco_venda__gte=preco_min).filter(preco_venda__lte=preco_max)
+        
+        categorias = Categoria.objects.all()
+
 
         context = {
             'categorias': categorias,

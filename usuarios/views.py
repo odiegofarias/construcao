@@ -24,8 +24,9 @@ def cadastrar_vendedor(request):
         user = Users.objects.filter(email=email)
         #TODO: Fazer validações dos campos
         if user.exists():
-            # TODO: Utilizar messages do django
-            return HttpResponse('Email já existe')
+            messages.add_message(request, messages.ERROR, 'O usuário já existe')
+            
+            return redirect('cadastrar_vendedor')
         
         user = Users.objects.create_user(
             username=email,
@@ -35,8 +36,9 @@ def cadastrar_vendedor(request):
             last_name=sobrenome,
             cargo='V',  
         )
-        # TODO: Redirecionar com uma mensagem
-        return HttpResponse('Conta criada.')
+        messages.add_message(request, messages.SUCCESS, 'Vendedor criado com sucesso.')
+        
+        return redirect('cadastrar_vendedor')
 
 def login(request):
     if request.method == "GET":
